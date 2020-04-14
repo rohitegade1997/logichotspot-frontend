@@ -1,0 +1,155 @@
+<section>
+    <div class="container">
+        <div class="row">
+            <h3 class="col-lg-9 pl-0 title">
+                Edit Business
+            </h3>
+        </div>
+
+        <div class="mt-5">
+            <form [formGroup]='editBusinessForm' (ngSubmit)="editBusiness()">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 pl-0" for="business name">Business Name:</label>
+                            <input tabindex="1" type="text" class="form-control col-lg-8"
+                                placeholder="Enter Business Name" name="name" formControlName="name"
+                                [ngClass]=" {'input-error': editBusinessForm.controls['name'].invalid && editBusinessForm.controls['name'].touched || editBusinessForm.controls['name'].untouched && submitted }">
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="editBusinessForm.get('name').hasError('required') && editBusinessForm.get('name').touched || (editBusinessForm.controls['name'].invalid && editBusinessForm.controls['name'].untouched && submitted)">
+                                <span *ngIf="editBusinessForm.get('name').hasError('required') ">Name is required</span>
+                            </p>
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="editBusinessForm.get('name').touched || (editBusinessForm.controls['name'].invalid)">
+                                <span *ngIf="editBusinessForm.get('name').hasError('pattern') ">Name can only contain
+                                    characters and numbers</span></p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 pl-0" for="business url">Business Url:</label>
+                            <input tabindex="1" type="text" class="form-control col-lg-8"
+                                placeholder="Enter Business Url" name="url" formControlName="url"
+                                [ngClass]=" {'input-error': editBusinessForm.controls['url'].invalid && editBusinessForm.controls['url'].touched || editBusinessForm.controls['url'].untouched && submitted }">
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="editBusinessForm.get('url').hasError('required') && editBusinessForm.get('url').touched || (editBusinessForm.controls['url'].invalid && editBusinessForm.controls['url'].untouched && submitted)">
+                                <span *ngIf="editBusinessForm.get('url').hasError('required') ">Url is required</span></p>
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="editBusinessForm.get('url').touched || (editBusinessForm.controls['url'].invalid && editBusinessForm.controls['url'].untouched && submitted)">
+                                <span *ngIf="editBusinessForm.get('url').hasError('pattern') ">Please enter valid Url</span></p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 pl-0" for="address1">Address 1:</label>
+                            <input tabindex="1" type="text" class="form-control col-lg-8" placeholder="Enter Address"
+                                name="address1" formControlName="address1"
+                                [ngClass]=" {'input-error': editBusinessForm.controls['address1'].invalid && editBusinessForm.controls['address1'].touched || editBusinessForm.controls['address1'].untouched && submitted }">
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="editBusinessForm.get('address1').hasError('required') && editBusinessForm.get('address1').touched || (editBusinessForm.controls['address1'].invalid && editBusinessForm.controls['address1'].untouched && submitted)">
+                                <span *ngIf="editBusinessForm.get('address1').hasError('required') ">Address1 is required</span>
+                            </p>
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="editBusinessForm.get('address1').touched || (editBusinessForm.controls['address1'].invalid && editBusinessForm.controls['address1'].untouched && submitted)">
+                                <span *ngIf="editBusinessForm.get('address1').hasError('pattern') ">Address1 can only contain
+                                    characters and numbers</span></p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 pl-0" for="address2">Address 2:</label>
+                            <input tabindex="1" type="text" class="form-control col-lg-8" placeholder="Enter Address"
+                                name="address2" formControlName="address2">
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"></p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 pl-0" for="Country">Country:</label>
+                            <select tabindex="5" class="form-control col-lg-8"
+                                (change)="getStateList($event.target.value)" formControlName="country"
+                                [ngClass]=" {'input-error': editBusinessForm.controls['country'].invalid && editBusinessForm.controls['country'].touched || editBusinessForm.controls['country'].untouched && submitted }">
+                                <option value="">Select</option>
+                                <option *ngFor="let country of countryListArr" [value]="country.id">
+                                    {{country.country_name}}</option>
+                            </select>
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="editBusinessForm.get('country').hasError('required') && editBusinessForm.get('country').touched || (editBusinessForm.controls['country'].invalid && editBusinessForm.controls['country'].untouched && submitted)">
+                                Please select country</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 pl-0" for="State">State:</label>
+                            <select tabindex="5" class="form-control col-lg-8"
+                                (change)="getCityList($event.target.value)" formControlName="state"
+                                [ngClass]=" {'input-error': editBusinessForm.controls['state'].invalid && editBusinessForm.controls['state'].touched || editBusinessForm.controls['state'].untouched && submitted }">
+                                <option value="">Select</option>
+                                <option *ngFor="let state of stateListArr" [value]="state.id">{{state.state_name}}
+                                </option>
+                            </select>
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="editBusinessForm.get('state').hasError('required') && editBusinessForm.get('state').touched || (editBusinessForm.controls['state'].invalid && editBusinessForm.controls['state'].untouched && submitted)">
+                                Please select state</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 pl-0" for="city">City:</label>
+                            <select tabindex="5" class="form-control col-lg-8" formControlName="city"
+                                [ngClass]=" {'input-error': editBusinessForm.controls['city'].invalid && editBusinessForm.controls['city'].touched || editBusinessForm.controls['city'].untouched && submitted }">
+                                <option value="">Select</option>
+                                <option *ngFor="let city of cityListArr" [value]="city.id">{{city.city_name}}
+                                </option>
+                            </select>
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="editBusinessForm.get('city').hasError('required') && editBusinessForm.get('city').touched || (editBusinessForm.controls['city'].invalid && editBusinessForm.controls['city'].untouched && submitted)">
+                                Please select city</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 pl-0" for="zip">ZIP:</label>
+                            <input tabindex="1" type="text" class="form-control col-lg-8" placeholder="Enter ZIP Code"
+                                name="zip" formControlName="zip"
+                                [ngClass]=" {'input-error': editBusinessForm.controls['zip'].invalid && editBusinessForm.controls['zip'].touched || editBusinessForm.controls['zip'].untouched && submitted }">
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="editBusinessForm.get('zip').hasError('required') && editBusinessForm.get('zip').touched || (editBusinessForm.controls['zip'].invalid && editBusinessForm.controls['zip'].untouched && submitted)">
+                                <span *ngIf="editBusinessForm.get('zip').hasError('required') ">ZIP is required</span></p>
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="editBusinessForm.get('zip').touched || (editBusinessForm.controls['zip'].invalid && editBusinessForm.controls['zip'].untouched && submitted)">
+                                <span *ngIf="editBusinessForm.get('zip').hasError('pattern') ">Please enter valid ZIP</span></p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 pl-0" for="phone">Business Phone:</label>
+                            <input tabindex="1" type="text" class="form-control col-lg-8"
+                                placeholder="Enter Business Phone" name="phone" formControlName="phone"
+                                [ngClass]=" {'input-error': editBusinessForm.controls['phone'].invalid && editBusinessForm.controls['phone'].touched || editBusinessForm.controls['phone'].untouched && submitted }">
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="editBusinessForm.get('phone').hasError('required') && editBusinessForm.get('phone').touched || (editBusinessForm.controls['phone'].invalid && editBusinessForm.controls['phone'].untouched && submitted)">
+                                <span *ngIf="editBusinessForm.get('phone').hasError('required') ">Phone is required</span></p>
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="editBusinessForm.get('phone').touched || (editBusinessForm.controls['phone'].invalid && editBusinessForm.controls['phone'].untouched && submitted)">
+                                <span *ngIf="editBusinessForm.get('phone').hasError('pattern') ">Please enter valid phone</span></p>
+                        </div>
+                    </div>
+
+                </div>
+                <br />
+                <button type="submit" class="btn btn-primary text-center">Save</button>
+                &nbsp;
+                <button class="btn btn-cancel text-center" (click)="backToList()">Cancel</button>
+            </form>
+        </div>
+    </div>
+</section>

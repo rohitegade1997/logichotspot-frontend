@@ -1,0 +1,20 @@
+<div class="container">
+    <div class="row">
+        <h3 class="col-lg-9 pl-0 title">
+            Edit Area
+        </h3>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group row">
+                <label class="col-lg-4 pl-0" for="Area Name">Area Name:</label>
+                <input type="text" class="form-control col-lg-8" autocomplete="NO" name="title" id="title"
+                    class="form-control" placeholder="Enter area name" [(ngModel)]="edit_area.title">
+            </div>
+        </div>
+    </div>
+    <br />
+    <button class="btn btn-primary" (click)="editArea($event)">Save</button>
+    &nbsp;
+    <button class="btn btn-cancel" (click)="backToList()">Cancel</button>
+</div>

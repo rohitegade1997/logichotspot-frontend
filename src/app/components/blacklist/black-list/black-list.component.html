@@ -1,0 +1,178 @@
+<div class="container">
+    <div class="row">
+        <h3 class="col-lg-10 pl-0 title">Black List</h3>
+        <button data-toggle="modal" data-target="#exampleModalCenter" class="btn login_btn float-right col-lg-2"
+            [style.background-color]="bgbtn" (click)="addNewBlacklist()">Add New</button>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-8 col-sm-12 pl-0">
+            <label>Search </label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Enter place name" aria-describedby="basic-addon2"
+                    [(ngModel)]="searchText">
+                <div class="input-group-append" (click)="searchBlacklist()">
+                    <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="offset-md-2 col-md-2 col-sm-6 pr-0">
+            <div class="row text-right">
+                <label>Items per page</label>
+                <select (change)="applyLimit($event.target.value)" class="form-control">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option *ngIf="total>=6" [value]="total">All</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="table-responsive Area-table col-md-12 pl-0 pr-0">
+            <mat-table class="table-bordered" [dataSource]="dataArr" matSort>
+                <ng-container matColumnDef="title">
+                    <mat-header-cell class="th" *matHeaderCellDef mat-sort-header>Place Name</mat-header-cell>
+                    <mat-cell class="td" *matCellDef="let obj">{{obj.title}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="mac">
+                    <mat-header-cell class="th" *matHeaderCellDef mat-sort-header>Mac Address</mat-header-cell>
+                    <mat-cell class="td" *matCellDef="let obj">{{obj.mac}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="attempt">
+                    <mat-header-cell class="th" *matHeaderCellDef mat-sort-header>Total Attempts</mat-header-cell>
+                    <mat-cell class="td" *matCellDef="let obj">{{obj.attempt}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="edit">
+                    <mat-header-cell class="th" *matHeaderCellDef mat-sort-header>Edit</mat-header-cell>
+                    <mat-cell data-toggle="modal" data-target="#editBlacklist" class="td" *matCellDef="let obj"><button
+                            mat-raised-button (click)="editBlacklisted(obj.id)">Edit</button></mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="delete">
+                    <mat-header-cell class="th" *matHeaderCellDef mat-sort-header>Delete from list</mat-header-cell>
+                    <mat-cell class="td" *matCellDef="let obj"><button mat-raised-button color="warn"
+                            (click)="deleteBlacklisted(obj.id)">Delete</button></mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns" color="primary"></mat-header-row>
+                <mat-row *matRowDef="let row; columns:displayedColumns"></mat-row>
+            </mat-table>
+        </div>
+    </div>
+
+    <div class="row justify-content-end">
+        <div class="col-md-6">
+            <br />
+            <div class="dataTables_info" role="status" aria-live="polite">Showing {{startno}}
+                to {{endno}} of {{total}}</div>
+        </div>
+        <div class="col-md-6">
+            <div class="dataTables_paginate paging_simple_numbers">
+                <br />
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item" *ngFor="let pg of totalpage;let i=index">
+                            <a class="page-link" (click)="nextPage(i+1)">{{i+1}}</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add New Modal -->
+    <div class="modal fade" #exampleModalCenter id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Add to blacklist</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form [formGroup]='myForm' (ngSubmit)="onSubmit()">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Place:</label>
+                            <select class="form-control" formControlName="place">
+                                <option value="">select</option>
+                                <option *ngFor="let obj of placeList" [value]="obj.id">{{obj.title}}</option>
+                            </select>
+                            <p class="form-error"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-12 pl-0">Mac address:</label>
+                            <input type="text" class="form-control col-lg-12" id="macid" placeholder="Mac address"
+                                name="macid" formControlName="macid"
+                                [ngClass]=" {'input-error': myForm.controls['macid'].invalid && myForm.controls['macid'].touched || myForm.controls['macid'].untouched && submitted}">
+                            <p class="form-error"
+                                *ngIf="myForm.get('macid').hasError('required') && myForm.get('macid').touched || (myForm.controls['macid'].invalid && myForm.controls['macid'].untouched && submitted)">
+                                Mac address is required</p>
+                            <p class="form-error"
+                                *ngIf="myForm.get('macid').touched && (myForm.controls['macid'].invalid) && myForm.get('macid').hasError('pattern') ">
+                                <span>Please enter correct Mac address</span></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-12 pl-0">Attempts:</label>
+                            <input type="number" class="form-control col-lg-12" id="attempt" min=1 placeholder="Total attempts"
+                                name="attempt" formControlName="attempt" [ngClass]=" {'input-error': myForm.controls['attempt'].invalid && myForm.controls['attempt'].touched || myForm.controls['attempt'].untouched && submitted}">
+                                <p class="form-error"
+                                *ngIf="myForm.get('attempt').hasError('required') && myForm.get('attempt').touched || (myForm.controls['attempt'].invalid && myForm.controls['attempt'].untouched && submitted)">
+                                Field is required</p>
+                            <p class="form-error"
+                                *ngIf="myForm.get('attempt').touched && (myForm.controls['attempt'].invalid) && myForm.get('attempt').hasError('pattern') ">
+                                <span>Number should be greater than zero</span></p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit blackList Modal -->
+    <div class="modal fade" #editBlacklist id="editBlacklist" tabindex="-1" role="dialog"
+        aria-labelledby="editblacklistTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Edit Black List</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form [formGroup]='editBlacklistedForm' (ngSubmit)="updateMac()">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-lg-12 pl-0">Mac address:</label>
+                            <input type="text" class="form-control col-lg-12" id="mac" placeholder="Mac address"
+                                name="mac" formControlName="mac"
+                                [ngClass]=" {'input-error': editBlacklistedForm.controls['mac'].invalid && editBlacklistedForm.controls['mac'].touched || editBlacklistedForm.controls['mac'].untouched && submitted}">
+                            <p class="form-error"
+                                *ngIf="editBlacklistedForm.get('mac').hasError('required') && editBlacklistedForm.get('mac').touched || (editBlacklistedForm.controls['mac'].invalid && editBlacklistedForm.controls['mac'].untouched && submitted)">
+                                Mac address is required</p>
+                            <p class="form-error"
+                                *ngIf="editBlacklistedForm.get('mac').touched && (editBlacklistedForm.controls['mac'].invalid) && editBlacklistedForm.get('mac').hasError('pattern') ">
+                                <span>Please enter correct Mac address</span></p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,44 @@
+<!-- <form (submit)="edit($event)">
+<div class="form-group">
+    <label for="title">Enter Area Name : </label>
+    <input type="text" name="title" id="title" class="form-control" placeholder="area name" [(ngModel)]="title">
+</div>
+<button class="btn btn-info">Edit</button>
+</form>
+
+<div class="form-group">
+    <table id="list">
+        <th>Name</th>
+    </table>
+</div> -->
+
+
+<!-- <div class="container">
+    <form (ngSubmit)="editData()">
+        <div class="form-group">
+            <label>Area Name</label>
+            <input type="text" class="form-control" placeholder="Enter area name">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-info">Edit</button>
+        </div>
+    </form>
+</div> -->
+
+
+<div class="container">
+    <table class="table" id="list">
+        <thead>
+            <tr>
+                <th scope="col">Area Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let obj of dataArr">
+                <td>{{obj.title}}</td>
+            </tr>
+            <!-- <tr>hey</tr>
+            <tr>hi</tr> -->
+        </tbody>
+    </table>
+</div>

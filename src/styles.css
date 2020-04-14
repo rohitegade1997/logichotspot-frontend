@@ -1,0 +1,136 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.row{
+    margin:0px auto !important ;
+}
+.login_btn{
+    display: inline-block;
+    padding: 10px 25px;
+    background-color: #6d0106;
+    color: #fff !important;
+    text-transform: uppercase;
+    border-radius: 30px;
+}
+.login_btn:hover{
+    text-decoration: none;
+}
+.login_btn{
+    display: inline-block;
+    padding: 7px 18px;
+    /* border: 1px solid #6d0106;
+    background-color: #6d0106; */
+    color: #fff !important;
+    text-transform: uppercase;
+    border-radius: 30px;
+}
+.input-group-text{
+    border: 1px solid #6d0106 !important;
+    background-color: #6d0106 !important;
+    color: #fff !important;
+}
+.input-group-text:hover{
+    cursor: pointer;
+    cursor: hand;
+    border: 1px solid #777 !important;
+    background-color: #777 !important;
+}
+@media only screen and (max-width: 767px){
+    .text-right{
+        text-align: center !important;
+    }
+}
+.form-control:focus , .form-control:hover{
+    outline: none;
+    box-shadow: none;
+}
+.Area-table{
+    margin-top: 20px;
+}
+.th {
+    padding: 0.75rem;
+    vertical-align: top;
+    font-size: larger;
+    color: black;
+}
+.td{
+    padding: 0.75rem;
+    vertical-align: top; 
+}
+.th{
+    background-color: #f1f1f1;
+    vertical-align: top !important;
+}
+.btn-primary,.btn-primary:focus,.btn-primary:hover,.btn-primary:active{
+    display: inline-block;
+    padding: 7px 18px;
+    border: none !important;
+    /* background-color: #6d0106 !important; */
+    color: #fff !important;
+    text-transform: uppercase;
+    border-radius: 30px;
+}
+
+.btn-primary{
+    display: inline-block;
+    padding: 7px 18px;
+    border: 1px solid #6d0106 !important;
+    background-color: #6d0106 !important;
+    color: #fff !important;
+    text-transform: uppercase;
+    border-radius: 30px;
+}
+.btn-primary:active,.btn-primary:focus,.btn-primary:hover{
+    border: 1px solid #676767 !important;
+    background-color: #676767 !important;
+}
+
+
+.btn-cancel,.btn-cancel:focus,.btn-cancel:hover,.btn-cancel:active{
+    display: inline-block;
+    padding: 7px 18px;
+    border: none !important;
+    /* background-color: #6d0106 !important; */
+    color: #fff !important;
+    text-transform: uppercase;
+    border-radius: 30px;
+}
+
+.btn-cancel{
+    display: inline-block;
+    padding: 7px 18px;
+    border: 1px solid #C6B6B3 !important;
+    background-color: #C6B6B3 !important;
+    color: #fff !important;
+    text-transform: uppercase;
+    border-radius: 30px;
+}
+.btn-cancel:active,.btn-cancel:focus,.btn-cancel:hover{
+    border: 1px solid #676767 !important;
+    background-color: #676767 !important;
+}
+.title{
+    font-size: 28px !important;
+    font-weight: 500 !important;
+}
+.navbar-light .navbar-nav .active-link{
+    border-bottom: 2px solid #780102;
+}
+.navbar-expand-lg .navbar-nav .nav-link {
+    padding-right: .9rem !important;
+    padding-left: .9rem !important;
+}
+.container{
+    margin-top: 20px !important;
+}
+.input-error{
+    border: 1px solid #F04F85 !important;
+}
+.form-error{
+    color: #F04F85;
+}
+.form-group{
+    padding-bottom: 20px;
+}

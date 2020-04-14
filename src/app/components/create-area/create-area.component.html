@@ -1,0 +1,66 @@
+<section>
+    <div class="container">
+        <div class="row">
+            <h3 class="col-lg-9 pl-0 title">
+                Add Area
+            </h3>
+        </div>
+
+        <div class="mt-5">
+            <form [formGroup]='myForm' (ngSubmit)="onSubmit()">
+                <div class="row">
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 pl-0" for="Country">Country:</label>
+                            <select tabindex="5" class="form-control col-lg-8"
+                                (change)="getStateList($event.target.value)" formControlName="country">
+                                <option value="">Select</option>
+                                <option *ngFor="let country of countryListArr" [value]="country.id">
+                                    {{country.country_name}}</option>
+                            </select>
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"></p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 pl-0" for="State">State:</label>
+                            <select tabindex="5" class="form-control col-lg-8"
+                                (change)="getCityList($event.target.value)" formControlName="state">
+                                <option value="">Select</option>
+                                <option *ngFor="let state of stateListArr" [value]="state.id">{{state.state_name}}
+                                </option>
+                            </select>
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"></p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 pl-0" for="Country">City:</label>
+                            <select tabindex="5" class="form-control col-lg-8" formControlName="city">
+                                <option value="">Select</option>
+                                <option *ngFor="let city of cityListArr" [value]="city.id">{{city.city_name}}
+                                </option>
+                            </select>
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"></p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 pl-0" for="Area Name">Area Name:</label>
+                            <input tabindex="1" type="text" class="form-control col-lg-8" placeholder="Enter Area Name"
+                                name="Area Name" formControlName="areaName">
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <button type="submit" class="btn btn-primary text-center">Save</button>
+                &nbsp;
+                <button class="btn btn-cancel text-center" (click)="backToList()">Cancel</button>
+            </form>
+        </div>
+    </div>
+</section>

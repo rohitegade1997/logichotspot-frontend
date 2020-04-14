@@ -1,0 +1,144 @@
+<div class="container">
+    <div class="row">
+        <h3 class="col-lg-10 pl-0 title">Category List</h3>
+        <button data-toggle="modal" data-target="#addCategoryModal" class="btn login_btn float-right col-lg-2"
+            [style.background-color]="bgbtn">Add New</button>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-8 col-sm-12 pl-0">
+            <label>Search </label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Enter category name"
+                    aria-describedby="basic-addon2" [(ngModel)]="searchText">
+                <div class="input-group-append" (click)="searchCategory()">
+                    <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="offset-md-2 col-md-2 col-sm-6 pr-0">
+            <div class="row text-right">
+                <label>Items per page</label>
+                <select (change)="applyLimit($event.target.value)" class="form-control">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option *ngIf="total>=6" [value]="total">All</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="table-responsive Area-table col-md-12 pl-0 pr-0">
+            <mat-table class="table-bordered" [dataSource]="dataArr" matSort>
+                <ng-container matColumnDef="title">
+                    <mat-header-cell class="th" *matHeaderCellDef mat-sort-header>Place Name</mat-header-cell>
+                    <mat-cell class="td" *matCellDef="let obj">{{obj.title}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="active">
+                    <mat-header-cell class="th" *matHeaderCellDef mat-sort-header>Active</mat-header-cell>
+                    <mat-cell class="td" *matCellDef="let obj">
+                        <mat-slide-toggle [(ngModel)]="obj.active" (change)="changeStatus(obj.id,obj.active)">
+                        </mat-slide-toggle>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="edit">
+                    <mat-header-cell class="th" *matHeaderCellDef mat-sort-header>Edit</mat-header-cell>
+                    <mat-cell data-toggle="modal" data-target="#editCategoryModal" class="td" *matCellDef="let obj">
+                        <button mat-raised-button (click)="editCategory(obj.id)">Edit</button></mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="delete">
+                    <mat-header-cell class="th" *matHeaderCellDef mat-sort-header>Delete from list</mat-header-cell>
+                    <mat-cell class="td" *matCellDef="let obj"><button mat-raised-button color="warn"
+                            (click)="deleteCategory(obj.id)">Delete</button></mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns" color="primary"></mat-header-row>
+                <mat-row *matRowDef="let row; columns:displayedColumns"></mat-row>
+            </mat-table>
+        </div>
+    </div>
+
+    <div class="row justify-content-end">
+        <div class="col-md-6">
+            <br />
+            <div class="dataTables_info" role="status" aria-live="polite">Showing {{startno}}
+                to {{endno}} of {{total}}</div>
+        </div>
+        <div class="col-md-6">
+            <div class="dataTables_paginate paging_simple_numbers">
+                <br />
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item" *ngFor="let pg of totalpage;let i=index">
+                            <a class="page-link" (click)="nextPage(i+1)">{{i+1}}</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit category Modal -->
+    <div class="modal fade" #editCategoryModal id="editCategoryModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Edit category</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form [formGroup]='editCategoryForm' (ngSubmit)="updateCategory()">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Category:</label>
+                            <input type="text" class="form-control col-lg-12" id="title"
+                                placeholder="Enter category name" name="title" formControlName="title">
+                            <p class="form-error"></p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add category Modal -->
+    <div class="modal fade" #addCategoryModal id="addCategoryModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Add new category</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form [formGroup]='addCategoryForm' (ngSubmit)="addNewCategory()">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Category:</label>
+                            <input type="text" class="form-control col-lg-12" id="category"
+                                placeholder="Enter category name" name="category" formControlName="category">
+                            <p class="form-error"></p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

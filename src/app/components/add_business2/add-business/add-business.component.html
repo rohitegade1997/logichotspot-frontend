@@ -1,0 +1,153 @@
+<section>
+    <div class="container">
+        <div class="row">
+            <h3 class="col-lg-9 pl-0 title">
+                Add New Business
+            </h3>
+        </div>
+
+        <div class="mt-5">
+            <form [formGroup]='myForm' (ngSubmit)="addBusiness()">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 pl-0" for="business name">Business Name:</label>
+                            <input tabindex="1" type="text" class="form-control col-lg-8"
+                                placeholder="Enter Business Name" name="name" formControlName="name"
+                                [ngClass]=" {'input-error': myForm.controls['name'].invalid && myForm.controls['name'].touched || myForm.controls['name'].untouched && submitted }">
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="myForm.get('name').hasError('required') && myForm.get('name').touched || (myForm.controls['name'].invalid && myForm.controls['name'].untouched && submitted)">
+                                <span *ngIf="myForm.get('name').hasError('required') ">Name is required</span></p>
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="myForm.get('name').touched || (myForm.controls['name'].invalid)">
+                                <span *ngIf="myForm.get('name').hasError('pattern') ">Name can only contain
+                                    characters and numbers</span></p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 pl-0" for="business url">Business Url:</label>
+                            <input tabindex="1" type="text" class="form-control col-lg-8"
+                                placeholder="Enter Business Url" name="url" formControlName="url"
+                                [ngClass]=" {'input-error': myForm.controls['url'].invalid && myForm.controls['url'].touched || myForm.controls['url'].untouched && submitted }">
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="myForm.get('url').hasError('required') && myForm.get('url').touched || (myForm.controls['url'].invalid && myForm.controls['url'].untouched && submitted)">
+                                <span *ngIf="myForm.get('url').hasError('required') ">Url is required</span></p>
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="myForm.get('url').touched || (myForm.controls['url'].invalid && myForm.controls['url'].untouched && submitted)">
+                                <span *ngIf="myForm.get('url').hasError('pattern') ">Please enter valid Url</span></p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 pl-0" for="address1">Address 1:</label>
+                            <input tabindex="1" type="text" class="form-control col-lg-8" placeholder="Enter Address"
+                                name="address1" formControlName="address1"
+                                [ngClass]=" {'input-error': myForm.controls['address1'].invalid && myForm.controls['address1'].touched || myForm.controls['address1'].untouched && submitted }">
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="myForm.get('address1').hasError('required') && myForm.get('address1').touched || (myForm.controls['address1'].invalid && myForm.controls['address1'].untouched && submitted)">
+                                <span *ngIf="myForm.get('address1').hasError('required') ">Address1 is required</span>
+                            </p>
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="myForm.get('address1').touched || (myForm.controls['address1'].invalid && myForm.controls['address1'].untouched && submitted)">
+                                <span *ngIf="myForm.get('address1').hasError('pattern') ">Address1 can only contain
+                                    characters and numbers</span></p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 pl-0" for="address2">Address 2:</label>
+                            <input tabindex="1" type="text" class="form-control col-lg-8" placeholder="Enter Address"
+                                name="address2" formControlName="address2">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 pl-0" for="Country">Country:</label>
+                            <select tabindex="5" class="form-control col-lg-8"
+                                (change)="getStateList($event.target.value)" formControlName="country"
+                                [ngClass]=" {'input-error': myForm.controls['country'].invalid && myForm.controls['country'].touched || myForm.controls['country'].untouched && submitted }">
+                                <option value="">Select</option>
+                                <option *ngFor="let country of countryListArr" [value]="country.id">
+                                    {{country.country_name}}</option>
+                            </select>
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="myForm.get('country').hasError('required') && myForm.get('country').touched || (myForm.controls['country'].invalid && myForm.controls['country'].untouched && submitted)">
+                                Please select country</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 pl-0" for="State">State:</label>
+                            <select tabindex="5" class="form-control col-lg-8"
+                                (change)="getCityList($event.target.value)" formControlName="state"
+                                [ngClass]=" {'input-error': myForm.controls['state'].invalid && myForm.controls['state'].touched || myForm.controls['state'].untouched && submitted }">
+                                <option value="">Select</option>
+                                <option *ngFor="let state of stateListArr" [value]="state.id">{{state.state_name}}
+                                </option>
+                            </select>
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="myForm.get('state').hasError('required') && myForm.get('state').touched || (myForm.controls['state'].invalid && myForm.controls['state'].untouched && submitted)">
+                                Please select state</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 pl-0" for="Country">City:</label>
+                            <select tabindex="5" class="form-control col-lg-8" formControlName="city"
+                                [ngClass]=" {'input-error': myForm.controls['city'].invalid && myForm.controls['city'].touched || myForm.controls['city'].untouched && submitted }">
+                                <option value="">Select</option>
+                                <option *ngFor="let city of cityListArr" [value]="city.id">{{city.city_name}}
+                                </option>
+                            </select>
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="myForm.get('city').hasError('required') && myForm.get('city').touched || (myForm.controls['city'].invalid && myForm.controls['city'].untouched && submitted)">
+                                Please select city</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 pl-0" for="zip">ZIP:</label>
+                            <input tabindex="1" type="text" class="form-control col-lg-8" placeholder="Enter ZIP Code"
+                                name="zip" formControlName="zip"
+                                [ngClass]=" {'input-error': myForm.controls['zip'].invalid && myForm.controls['zip'].touched || myForm.controls['zip'].untouched && submitted }">
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="myForm.get('zip').hasError('required') && myForm.get('zip').touched || (myForm.controls['zip'].invalid && myForm.controls['zip'].untouched && submitted)">
+                                <span *ngIf="myForm.get('zip').hasError('required') ">ZIP is required</span></p>
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="myForm.get('zip').touched || (myForm.controls['zip'].invalid && myForm.controls['zip'].untouched && submitted)">
+                                <span *ngIf="myForm.get('zip').hasError('pattern') ">Please enter valid ZIP</span></p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 pl-0" for="phone">Business Phone:</label>
+                            <input tabindex="1" type="text" class="form-control col-lg-8"
+                                placeholder="Enter Business Phone" name="phone" formControlName="phone"
+                                [ngClass]=" {'input-error': myForm.controls['phone'].invalid && myForm.controls['phone'].touched || myForm.controls['phone'].untouched && submitted }">
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="myForm.get('phone').hasError('required') && myForm.get('phone').touched || (myForm.controls['phone'].invalid && myForm.controls['phone'].untouched && submitted)">
+                                <span *ngIf="myForm.get('phone').hasError('required') ">Phone is required</span></p>
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="myForm.get('phone').touched || (myForm.controls['phone'].invalid && myForm.controls['phone'].untouched && submitted)">
+                                <span *ngIf="myForm.get('phone').hasError('pattern') ">Please enter valid phone</span></p>
+                        </div>
+                    </div>
+
+                </div>
+                <br />
+                <button type="submit" class="btn btn-primary text-center">Save</button>
+                &nbsp;
+                <button class="btn btn-cancel text-center" (click)="backToList()">Cancel</button>
+            </form>
+        </div>
+    </div>
+</section>

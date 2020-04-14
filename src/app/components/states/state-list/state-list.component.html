@@ -1,0 +1,73 @@
+<div class="container">
+    <div class="row">
+        <h3 class="col-lg-10 pl-0 title">State List</h3>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-8 col-sm-12 pl-0">
+            <label>Search </label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Enter state name"
+                    aria-describedby="basic-addon2" [(ngModel)]="searchText">
+                <div class="input-group-append" (click)="searchState()">
+                    <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="offset-md-2 col-md-2 col-sm-6 pr-0">
+            <div class="row text-right">
+                <label>Items per page</label>
+                <select (change)="applyLimit($event.target.value)" class="form-control">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option *ngIf="total>=6" [value]="total">All</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="table-responsive Area-table col-md-12 pl-0 pr-0">
+            <mat-table class="table-bordered" [dataSource]="dataArr" matSort>
+                <ng-container matColumnDef="name">
+                    <mat-header-cell class="th" *matHeaderCellDef mat-sort-header>State Name</mat-header-cell>
+                    <mat-cell class="td" *matCellDef="let obj">{{obj.state_name}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="active">
+                    <mat-header-cell class="th" *matHeaderCellDef mat-sort-header>Active</mat-header-cell>
+                    <mat-cell class="td" *matCellDef="let obj">
+                        <mat-slide-toggle [(ngModel)]="obj.active" (change)="changeStatus(obj.id,obj.active)">
+                        </mat-slide-toggle>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns" color="primary"></mat-header-row>
+                <mat-row *matRowDef="let row; columns:displayedColumns"></mat-row>
+            </mat-table>
+        </div>
+    </div>
+
+    <div class="row justify-content-end">
+        <div class="col-md-6">
+            <br />
+            <div class="dataTables_info" role="status" aria-live="polite">Showing {{startno}}
+                to {{endno}} of {{total}}</div>
+        </div>
+        <div class="col-md-6">
+            <div class="dataTables_paginate paging_simple_numbers">
+                <br />
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item" *ngFor="let pg of totalpage;let i=index">
+                            <a class="page-link" (click)="nextPage(i+1)">{{i+1}}</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
