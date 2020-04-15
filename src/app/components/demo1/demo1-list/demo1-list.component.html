@@ -1,1 +1,132 @@
-<p>demo1-list works!</p>
+<div class="container">
+    <div class="row">
+        <h3 class="col-lg-10 pl-0 title">Demo1 List</h3>
+        <button data-toggle="modal" data-target="#addDemo1Modal" class="btn login_btn float-right col-lg-2"
+            [style.background-color]="bgbtn">Add New</button>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-8 col-sm-12 pl-0">
+            <label>Search </label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Enter name" aria-describedby="basic-addon2"
+                    [(ngModel)]="searchText">
+                <div class="input-group-append" (click)="searchName()">
+                    <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="offset-md-2 col-md-2 col-sm-6 pr-0">
+            <div class="row text-right">
+                <label>Items per page</label>
+                <select (change)="applyLimit($event.target.value)" class="form-control">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option *ngIf="total>=6" [value]="total">All</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="table-responsive Area-table col-md-12 pl-0 pr-0">
+            <mat-table class="table-bordered" [dataSource]="dataArr" matSort>
+                <ng-container matColumnDef="firstName">
+                    <mat-header-cell class="th" *matHeaderCellDef mat-sort-header>First Name</mat-header-cell>
+                    <mat-cell class="td" *matCellDef="let obj">{{obj.first_name}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="lastName">
+                    <mat-header-cell class="th" *matHeaderCellDef mat-sort-header>Last Name</mat-header-cell>
+                    <mat-cell class="td" *matCellDef="let obj">{{obj.last_name}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="phone">
+                    <mat-header-cell class="th" *matHeaderCellDef mat-sort-header>Phone Number</mat-header-cell>
+                    <mat-cell class="td" *matCellDef="let obj">{{obj.indian_phone}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="edit">
+                    <mat-header-cell class="th" *matHeaderCellDef mat-sort-header>Edit</mat-header-cell>
+                    <mat-cell class="td" *matCellDef="let obj">
+                        <button mat-raised-button (click)="editName(obj.id)">Edit</button></mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="delete">
+                    <mat-header-cell class="th" *matHeaderCellDef mat-sort-header>Delete from list</mat-header-cell>
+                    <mat-cell class="td" *matCellDef="let obj"><button mat-raised-button color="warn"
+                            (click)="deleteName(obj.id)">Delete</button></mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns" color="primary"></mat-header-row>
+                <mat-row *matRowDef="let row; columns:displayedColumns"></mat-row>
+            </mat-table>
+        </div>
+    </div>
+
+    <div class="row justify-content-end">
+        <div class="col-md-6">
+            <br />
+            <div class="dataTables_info" role="status" aria-live="polite">Showing {{startno}}
+                to {{endno}} of {{total}}</div>
+        </div>
+        <div class="col-md-6">
+            <div class="dataTables_paginate paging_simple_numbers">
+                <br />
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item" *ngFor="let pg of totalpage;let i=index">
+                            <a class="page-link" (click)="nextPage(i+1)">{{i+1}}</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add demo1 Modal -->
+    <div class="modal fade" #addDemo1Modal id="addDemo1Modal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Add new record</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form [formGroup]='addRecordForm' (ngSubmit)="addNewRecord()">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>First Name:</label>
+                            <input type="text" class="form-control col-lg-12" id="firstName"
+                                placeholder="Enter first name" name="firstName" formControlName="firstName">
+                            <p class="form-error"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name:</label>
+                            <input type="text" class="form-control col-lg-12" id="lastName"
+                                placeholder="Enter last name" name="lastName" formControlName="lastName">
+                            <p class="form-error"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone:</label>
+                            <input type="text" class="form-control col-lg-12" id="phone"
+                                placeholder="Enter phone number" name="phone" formControlName="phone"
+                                [ngClass]=" {'input-error': addRecordForm.controls['phone'].invalid && addRecordForm.controls['phone'].touched || addRecordForm.controls['phone'].untouched && submitted }">
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="addRecordForm.get('phone').hasError('required') && addRecordForm.get('phone').touched || (addRecordForm.controls['phone'].invalid && addRecordForm.controls['phone'].untouched && submitted)">
+                                <span *ngIf="addRecordForm.get('phone').hasError('required') ">Phone is required</span></p>
+                            <p class="form-error offset-lg-4 col-lg-8 pl-0"
+                                *ngIf="addRecordForm.get('phone').touched || (addRecordForm.controls['phone'].invalid && addRecordForm.controls['phone'].untouched && submitted)">
+                                <span *ngIf="addRecordForm.get('phone').hasError('pattern') ">Please enter valid phone number</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
